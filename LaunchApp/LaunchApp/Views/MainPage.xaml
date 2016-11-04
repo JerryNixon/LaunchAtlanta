@@ -17,7 +17,7 @@
     <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
         <controls:PageHeader x:Name="pageHeader"
-                             Content="Launch App"
+                             Content="This is the Launch App"
                              RelativePanel.AlignLeftWithPanel="True"
                              RelativePanel.AlignRightWithPanel="True"
                              RelativePanel.AlignTopWithPanel="True" />
