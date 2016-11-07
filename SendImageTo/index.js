@@ -21,10 +21,9 @@ module.exports = function (context, myBlob) {
 
     var blobName = context.bindingData.name;
     var blobSvc = azure.createBlobService();
+    
     var writeable = fs.createWriteStream(destinationFileNameTarget);
-
-    blobSvc.createReadStream(containerName, blobName).pipe(writable);
-
+    blobSvc.createReadStream(containerName, blobName).pipe(writeable);
     writeable.on('finish', function(){  
         var twitterImage = require('fs').readFileSync(destinationFileNameTarget);
 
