@@ -18,37 +18,47 @@ module.exports = function (context, myBlob) {
     var blobName = context.bindingData.name;
     var blobSvc = azure.createBlobService();
 
-    // Make post request on media endpoint. Pass file data as media parameter
-    client.post('media/upload', {media: myBlob}, function(error, media, response) {
+     blobSvc.getBlobToStream(container, blobName, res, function(error, stream){
+        if(!error){            
+            // Make post request on media endpoint. Pass file data as media parameter
+            client.post('media/upload', {media: stream}, function(error, media, response) {
 
-        if (!error) {
-            // If successful, a media object will be returned.
-            context.log('media uploaded', media);
-
-            // Lets tweet it
-            var status = {
-              status: 'I am a tweet',
-              media_ids: media.media_id_string // Pass the media id string
-            }
-
-            client.post('statuses/update', status, function(error, tweet, response) {
                 if (!error) {
-                    console.log('tweet sent', tweet);
-                    console.log('tweet response', response);
-                    blobSvc.deleteBlob(container, blobName, function(error, response){
-                        if(!error){
-                            // Blob has been deleted
-                            context.log('deleted');
-                            context.done();
-                        } else {
-                            context.log('error deleting');
-                            context.done();
+                    // If successful, a media object will be returned.
+                    context.log('media uploaded', media);
+
+                    // Lets tweet it
+                    var status = {
+                      status: 'I am a tweet',
+                      media_ids: media.media_id_string // Pass the media id string
+                    }
+
+                    client.post('statuses/update', status, function(error, tweet, response) {
+                        if (!error) {
+                            console.log('tweet sent', tweet);
+                            console.log('tweet response', response);
+                            blobSvc.deleteBlob(container, blobName, function(error, response){
+                                if(!error){
+                                    // Blob has been deleted
+                                    context.log('deleted');
+                                    context.done();
+                                } else {
+                                    context.log('error deleting');
+                                    context.done();
+                                }
+                            });
                         }
                     });
+                } else {
+                    context.log('error uploading', error);
+                    context.done();
                 }
             });
-        } else {
-            context.log('error uploading', error);
+        }
+        else
+        {
+            context.log('error');
+            context.log(error);
             context.done();
         }
     });
