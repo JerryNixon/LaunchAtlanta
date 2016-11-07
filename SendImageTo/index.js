@@ -21,11 +21,8 @@ module.exports = function (context, myBlob) {
 
     var blobName = context.bindingData.name;
     var blobSvc = azure.createBlobService();
-
-    // Load your image
-    var stream = fs.createReadStream(fileNameTarget).pipe(blobService.createWriteStreamToAppendBlob(containerName, blobName));
-
     var writable = fs.createWriteStream(destinationFileNameTarget);
+    
     blobService.createReadStream(containerName, blobName).pipe(writable);
 
     writeable.on('finish', function(){  
