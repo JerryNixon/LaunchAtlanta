@@ -7,7 +7,7 @@ module.exports = function (context, myBlob) {
     context.log(JSON.stringify(context));
     context.log(JSON.stringify(context));
     var blobSvc = azure.createBlobService();
-    blobSvc.deleteBlob(containerName, blobName, function(error, response){
+    blobSvc.deleteBlob(container, blobName, function(error, response){
         if(!error){
             // Blob has been deleted
             context.log('deleted')
