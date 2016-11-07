@@ -2,10 +2,10 @@
     "disabled": false,
     "bindings": [
         {
-            "name": "myBlob",
+            "name": "SendImageTo",
             "type": "blobTrigger",
             "direction": "in",
-            "path": "samples-workitems/{name}",
+            "path": "workitems/{name}",
             "connection":""
         }
     ]
