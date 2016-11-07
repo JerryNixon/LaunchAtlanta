@@ -1,5 +1,6 @@
 ﻿var azure = require('azure-storage');
 var fs = require("fs");
+var Twitter = require('twitter');
 
 module.exports = function (context, myBlob) {
     var container = "workitems";
