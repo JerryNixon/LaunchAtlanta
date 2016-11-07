@@ -1,6 +1,7 @@
 ﻿var azure = require('azure-storage');
 var fs = require("fs");
 var Twitter = require('twitter');
+var MemoryStream = require('memory-stream');
 
 module.exports = function (context, myBlob) {
     var container = "workitems";
@@ -18,10 +19,15 @@ module.exports = function (context, myBlob) {
     var blobName = context.bindingData.name;
     var blobSvc = azure.createBlobService();
 
-     blobSvc.getBlobToStream(container, blobName, function(error, stream){
-        if(!error){            
+    var writableStream = fs.createWriteStream();
+
+
+    var memoryStream = new MemoryStream();
+
+    blobSvc.getBlobToStream(container, blobName, memoryStream, function (error, stream) {
+        if (!error) {
             // Make post request on media endpoint. Pass file data as media parameter
-            client.post('media/upload', {media: stream}, function(error, media, response) {
+            client.post('media/upload', { media: memoryStream }, function (error, media, response) {
 
                 if (!error) {
                     // If successful, a media object will be returned.
@@ -29,16 +35,16 @@ module.exports = function (context, myBlob) {
 
                     // Lets tweet it
                     var status = {
-                      status: 'I am a tweet',
-                      media_ids: media.media_id_string // Pass the media id string
+                        status: 'I am a tweet',
+                        media_ids: media.media_id_string // Pass the media id string
                     }
 
-                    client.post('statuses/update', status, function(error, tweet, response) {
+                    client.post('statuses/update', status, function (error, tweet, response) {
                         if (!error) {
                             console.log('tweet sent', tweet);
                             console.log('tweet response', response);
-                            blobSvc.deleteBlob(container, blobName, function(error, response){
-                                if(!error){
+                            blobSvc.deleteBlob(container, blobName, function (error, response) {
+                                if (!error) {
                                     // Blob has been deleted
                                     context.log('deleted');
                                     context.done();
@@ -54,9 +60,7 @@ module.exports = function (context, myBlob) {
                     context.done();
                 }
             });
-        }
-        else
-        {
+        } else {
             context.log('error');
             context.log(error);
             context.done();
