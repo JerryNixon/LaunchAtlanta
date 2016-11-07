@@ -13,7 +13,7 @@ module.exports = function (context, myBlob) {
         access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
         access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
     });
-
+ 
     context.log("Node.js blob trigger function processed blob \n Name:", context.bindingData.name, "\n Blob Size:", myBlob.length, "Bytes");
     context.log('Node.js blob trigger function processed blob', myBlob);
     //context.log('Node.js blob type of',  typeOf(myBlob));
