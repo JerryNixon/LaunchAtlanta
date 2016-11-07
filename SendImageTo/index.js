@@ -2,6 +2,7 @@
 var fs = require("fs");
 var Twitter = require('twitter');
 var path = require('path');
+var os = require('os');
 
 module.exports = function (context, myBlob) {
     var containerName = "workitems";
