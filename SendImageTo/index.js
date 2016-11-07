@@ -13,13 +13,13 @@ module.exports = function (context, myBlob) {
     });
 
     context.log("Node.js blob trigger function processed blob \n Name:", context.bindingData.name, "\n Blob Size:", myBlob.length, "Bytes");
-    context.log('Node.js blob trigger function processed blob', blob);
+    context.log('Node.js blob trigger function processed blob', myBlob);
 
     var blobName = context.bindingData.name;
     var blobSvc = azure.createBlobService();
 
     // Make post request on media endpoint. Pass file data as media parameter
-    client.post('media/upload', {media: blob}, function(error, media, response) {
+    client.post('media/upload', {media: myBlob}, function(error, media, response) {
 
         if (!error) {
             // If successful, a media object will be returned.
