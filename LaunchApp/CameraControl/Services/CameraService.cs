@@ -1,52 +1,37 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Template10.Common;
-using Template10.Utils;
-using Windows.Devices.Enumeration;
-using Windows.Graphics.Display;
 using Windows.Media.Capture;
 using Windows.Media.Core;
-using Windows.Media.Devices;
-using Windows.Media.Effects;
-using Windows.Media.MediaProperties;
-using Windows.Storage;
-using Windows.Storage.BulkAccess;
-using Windows.Storage.Search;
 using Windows.System.Display;
-using Windows.UI;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Shapes;
 
-namespace LaunchApp.Services.CameraService
+namespace CameraControl
 {
     public class CameraService
     {
-        public static CameraService Instance;
+        public FaceLogic Face { get; private set; }
+        public PreviewLogic Preview { get; private set; }
+        public PhotoLogic Photo { get; private set; }
+        public VideoLogic Video { get; private set; }
 
-        static CameraService()
-        {
-            Instance = new CameraService();
-        }
-
-        private CameraService()
-        {
-            // Prevent the screen from sleeping 
-            DisplayRequest.RequestActive();
-        }
+        public event EventHandler<FaceDetectedEventArgs> FaceDetected;
 
         private DisplayRequest DisplayRequest { get; } = new DisplayRequest();
         public static MediaCapture DefaultManager { get; set; } = null;
         public string VideoId => DefaultManager?.MediaCaptureSettings.VideoDeviceId;
         public string AudioId => DefaultManager?.MediaCaptureSettings.VideoDeviceId;
 
-        public async Task<MediaCapture> InitializeAsync(string videoDeviceId, string audioDeviceId = null)
+        public async Task<MediaCapture> InitAsync(string videoDeviceId, string audioDeviceId = null)
         {
-            if (DefaultManager != null && DefaultManager.MediaCaptureSettings.VideoDeviceId.ToLower() == videoDeviceId.ToLower())
+            // Prevent the screen from sleeping 
+            DisplayRequest.RequestActive();
+
+            if (DefaultManager != null)
             {
-                return DefaultManager;
+                var current = DefaultManager.MediaCaptureSettings.VideoDeviceId?.ToLower();
+                if (current.Equals(videoDeviceId))
+                {
+                    return DefaultManager;
+                }
             }
 
             try
@@ -65,34 +50,34 @@ namespace LaunchApp.Services.CameraService
             if (audioDeviceId != null) settings.AudioDeviceId = audioDeviceId;
 
             await DefaultManager.InitializeAsync(settings);
-            await SetupFaceDetection();
 
             Face = new FaceLogic(DefaultManager);
-            Preview = new PreviewLogic(DefaultManager);
+            Face.FaceDetected += Face_FaceDetected;
+            await Face.InitAsync();
+
+            Preview = new PreviewLogic(DefaultManager, Face);
             Photo = new PhotoLogic(DefaultManager);
             Video = new VideoLogic(DefaultManager);
-
 
             return DefaultManager;
         }
 
-        private async void DefaultManager_RecordLimitationExceeded(MediaCapture sender)
-        {
-            await Video.StopCaptureAsync();
-        }
-
         public async Task StopEverythingAsync()
         {
-            if (Preview.Previewing)
-                await Preview.StopAsync();
-
-            if (Video.Capturing)
-                await Video.StopCaptureAsync();
-
-            if (FaceDetection != null)
+            if (Preview?.IsPreviewing ?? false)
             {
-                FaceDetection.Enabled = false;
-                FaceDetection.FaceDetected -= FaceDetection_FaceDetected;
+                await Preview.StopAsync();
+            }
+
+            if (Video?.IsCapturing ?? false)
+            {
+                await Video.StopCaptureAsync();
+            }
+
+            if (Face != null)
+            {
+                Face.IsEnabled = false;
+                Face.FaceDetected -= Face_FaceDetected;
             }
 
             if (DefaultManager != null)
@@ -104,14 +89,14 @@ namespace LaunchApp.Services.CameraService
             }
         }
 
-        #region Face detect
+        private void Face_FaceDetected(Object sender, FaceDetectedEventArgs e)
+        {
+            FaceDetected?.Invoke(sender, e);
+        }
 
-        public FaceLogic Face { get; private set; }
-
-        #endregion
-
-        public PreviewLogic Preview { get; private set; }
-        public PhotoLogic Photo { get; private set; }
-        public VideoLogic Video { get; private set; }
+        private async void DefaultManager_RecordLimitationExceeded(MediaCapture sender)
+        {
+            await Video.StopCaptureAsync();
+        }
     }
 }

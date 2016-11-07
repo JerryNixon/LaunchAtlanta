@@ -1,4 +1,10 @@
 using System;
+using System.Threading.Tasks;
+using Windows.ApplicationModel;
+using Windows.Graphics.Display;
+using Windows.Media.Capture;
+using Windows.System.Display;
+using Windows.UI.Core;
 using Windows.UI.Xaml.Controls;
 
 namespace LaunchApp.Views
@@ -8,7 +14,6 @@ namespace LaunchApp.Views
         public MainPage()
         {
             InitializeComponent();
-
             NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
         }
 
@@ -17,7 +22,7 @@ namespace LaunchApp.Views
             await MyContentDialog.ShowAsync();
         }
 
-        private async void MyContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        private void MyContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
             // TODO
         }

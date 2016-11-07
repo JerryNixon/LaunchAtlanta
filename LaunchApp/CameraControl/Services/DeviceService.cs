@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
 using Windows.Media.Capture;
 
-namespace LaunchApp.Services.CameraService
+namespace CameraControl
 {
     public class DeviceService
     {

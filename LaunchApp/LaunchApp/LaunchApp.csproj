@@ -99,18 +99,10 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\CameraPreview.xaml.cs">
-      <DependentUpon>CameraPreview.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\NumberPad.xaml.cs">
       <DependentUpon>NumberPad.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Servicez\CameraService\CameraService.cs" />
-    <Compile Include="Servicez\CameraService\DeviceService.cs" />
-    <Compile Include="Servicez\CameraService\PhotoClass.cs" />
-    <Compile Include="Servicez\CameraService\PreviewClass.cs" />
-    <Compile Include="Servicez\CameraService\VideoClass.cs" />
     <Compile Include="Servicez\FileHelper.cs" />
     <Compile Include="Servicez\SettingsService.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
@@ -141,10 +133,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Controls\CameraPreview.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Controls\NumberPad.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -161,6 +149,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CameraControl\CameraControl.csproj">
+      <Project>{c966bbfb-aed4-4aab-b332-99ef8da44ba5}</Project>
+      <Name>CameraControl</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

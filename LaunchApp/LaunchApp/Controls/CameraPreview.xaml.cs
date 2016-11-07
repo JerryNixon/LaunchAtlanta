@@ -46,7 +46,7 @@ namespace LaunchApp.Controls
             var cameraService = Services.CameraService.CameraService.Instance;
             MyCaptureGrid.Children.Add(cameraService.FacesCanvas);
 
-            var deviceService = Services.DeviceService.Instance;
+            var deviceService = Services.CameraService.DeviceService.Instance;
             await deviceService.InitializeAsync();
 
             var setup = new Action<string>(id =>
@@ -83,7 +83,7 @@ namespace LaunchApp.Controls
 
             App.Current.Suspending += async (s, e) =>
             {
-                await cameraService.StopEverything();
+                await cameraService.StopEverythingAsync();
             };
             App.Current.Resuming += (s, e) =>
             {
