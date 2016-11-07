@@ -17,7 +17,7 @@ module.exports = function (context, myBlob) {
  
     context.log("Node.js blob trigger function processed blob \n Name:", context.bindingData.name, "\n Blob Size:", myBlob.length, "Bytes");
     context.log('Node.js blob trigger function processed blob', myBlob);
-    //context.log('Node.js blob type of',  typeOf(myBlob));
+    context.log('Node.js blob type of', typeof myBlob);
 
     var blobName = context.bindingData.name;
     var blobSvc = azure.createBlobService();
