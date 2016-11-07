@@ -1,10 +1,11 @@
 ﻿var azure = require('azure-storage');
 var fs = require("fs");
 var Twitter = require('twitter');
+var path = require('path');
 
 module.exports = function (context, myBlob) {
     var containerName = "workitems";
-    var destinationFileNameTarget = "file.jpg";
+    var destinationFileNameTarget = path.join(os.tmpdir(),"file.jpg");
 
     var client = new Twitter({
         consumer_key: process.env.TWITTER_CONSUMER_KEY,
@@ -21,7 +22,6 @@ module.exports = function (context, myBlob) {
     var blobSvc = azure.createBlobService();
 
     // Load your image
-    var data = require('fs').readFileSync('image.jpg');
     var stream = fs.createReadStream(fileNameTarget).pipe(blobService.createWriteStreamToAppendBlob(containerName, blobName));
 
     var writable = fs.createWriteStream(destinationFileNameTarget);
@@ -38,8 +38,8 @@ module.exports = function (context, myBlob) {
 
                 // Lets tweet it
                 var status = {
-                status: 'I am a tweet',
-                media_ids: media.media_id_string // Pass the media id string
+                    status: 'I am a tweet',
+                    media_ids: media.media_id_string // Pass the media id string
                 }
 
                 client.post('statuses/update', status, function(error, tweet, response) {
