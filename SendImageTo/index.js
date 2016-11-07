@@ -18,10 +18,6 @@ module.exports = function (context, myBlob) {
 
     var blobName = context.bindingData.name;
     var blobSvc = azure.createBlobService();
-
-    var writableStream = fs.createWriteStream();
-
-
     var memoryStream = new MemoryStream();
 
     blobSvc.getBlobToStream(container, blobName, memoryStream, function (error, stream) {
