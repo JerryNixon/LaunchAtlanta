@@ -18,7 +18,7 @@ module.exports = function (context, myBlob) {
     var blobName = context.bindingData.name;
     var blobSvc = azure.createBlobService();
 
-     blobSvc.getBlobToStream(container, blobName, res, function(error, stream){
+     blobSvc.getBlobToStream(container, blobName, function(error, stream){
         if(!error){            
             // Make post request on media endpoint. Pass file data as media parameter
             client.post('media/upload', {media: stream}, function(error, media, response) {
