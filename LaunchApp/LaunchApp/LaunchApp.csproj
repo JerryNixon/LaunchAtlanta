@@ -103,6 +103,10 @@
       <DependentUpon>NumberPad.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Servicez\BlobService\BlobHelper.cs" />
+    <Compile Include="Servicez\BlobService\ItemLogic.cs" />
+    <Compile Include="Servicez\BlobService\BlobService.cs" />
+    <Compile Include="Servicez\BlobService\ContainerLogic.cs" />
     <Compile Include="Servicez\FileHelper.cs" />
     <Compile Include="Servicez\SettingsService.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />

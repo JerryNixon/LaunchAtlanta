@@ -56,7 +56,6 @@ namespace CameraControl
         {
             FaceOutlineCanvas.Children.Clear();
             var faces = e.ResultFrame.DetectedFaces?.Where(x => x.FaceBox.Width != 0 && x.FaceBox.Height != 0);
-            var pic = await cameraService.Photo.CaptureAsync();
             foreach (var face in faces)
             {
                 var outline = new Rectangle
@@ -64,12 +63,12 @@ namespace CameraControl
                     Style = FaceOutlineStyle,
                     Height = face.FaceBox.Height,
                     Width = face.FaceBox.Width,
-                    Visibility = FaceOutlineVisibility,
                 };
                 Canvas.SetLeft(outline, face.FaceBox.X);
                 Canvas.SetTop(outline, face.FaceBox.Y);
                 FaceOutlineCanvas.Children.Add(outline);
 
+                //var pic = await cameraService.Photo.CaptureAsync();
                 //uint startPointX = (uint)Math.Floor(face.FaceBox.X * scale);
                 //uint startPointY = (uint)Math.Floor(face.FaceBox.Y * scale);
                 //uint height = (uint)Math.Floor(corpSize.Height * scale);
@@ -80,8 +79,6 @@ namespace CameraControl
             var args = new FaceDetectedEventArgsEx { Faces = projection };
             FaceDetected?.Invoke(this, args);
         }
-
-        public Visibility FaceOutlineVisibility { get; set; }
 
         public Style FaceOutlineStyle { get; set; }
 
