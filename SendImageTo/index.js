@@ -45,7 +45,7 @@ module.exports = function (context, myBlob) {
                         // var tweet_link = "https://twitter.com/MicrosoftLaunch/status/" + tweet.d_str;
                         // context.log('tweet link', tweet_link);
                         // context.log('tweet response', response);
-                        content.log(JSON.stringify(tweet));
+                        context.log(JSON.stringify(tweet));
                         blobSvc.deleteBlob(containerName, blobName, function(error, response){
                             if(!error){
                                 // Blob has been deleted
