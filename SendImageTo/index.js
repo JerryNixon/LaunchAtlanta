@@ -15,9 +15,9 @@ module.exports = function (context, myBlob) {
         access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
     });
  
-    context.log("Node.js blob trigger function processed blob \n Name:", context.bindingData.name, "\n Blob Size:", myBlob.length, "Bytes");
-    context.log('Node.js blob trigger function processed blob', myBlob);
-    context.log('Node.js blob type of', typeof myBlob);
+    // context.log("Node.js blob trigger function processed blob \n Name:", context.bindingData.name, "\n Blob Size:", myBlob.length, "Bytes");
+    // context.log('Node.js blob trigger function processed blob', myBlob);
+    // context.log('Node.js blob type of', typeof myBlob);
 
     var blobName = context.bindingData.name;
     var blobSvc = azure.createBlobService();
@@ -31,7 +31,7 @@ module.exports = function (context, myBlob) {
         client.post('media/upload', {media: twitterImage}, function(error, media, response) {
             if (!error) {
                 // If successful, a media object will be returned.
-                context.log('media uploaded', media);
+                context.log('media uploaded');
 
                 // Lets tweet it
                 var status = {
