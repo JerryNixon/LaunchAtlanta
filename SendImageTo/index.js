@@ -41,8 +41,8 @@ module.exports = function (context, myBlob) {
 
                 client.post('statuses/update', status, function(error, tweet, response) {
                     if (!error) {
-                        console.log('tweet sent', tweet);
-                        console.log('tweet response', response);
+                        context.log('tweet sent', tweet);
+                        context.log('tweet response', response);
                         blobSvc.deleteBlob(containerName, blobName, function(error, response){
                             if(!error){
                                 // Blob has been deleted
