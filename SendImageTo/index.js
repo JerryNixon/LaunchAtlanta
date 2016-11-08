@@ -42,7 +42,7 @@ module.exports = function (context, myBlob) {
                 client.post('statuses/update', status, function(error, tweet, response) {
                     if (!error) {
                         context.log('tweet sent', tweet);
-                        var tweet_link = "https://twitter.com/MicrosoftLaunch/status/" + tweet.d_str
+                        var tweet_link = "https://twitter.com/MicrosoftLaunch/status/" + tweet.d_str;
                         context.log('tweet link', tweet_link);
                         context.log('tweet response', response);
                         blobSvc.deleteBlob(containerName, blobName, function(error, response){
