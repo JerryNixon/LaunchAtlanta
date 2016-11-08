@@ -14,10 +14,6 @@ module.exports = function (context, myBlob) {
         access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
         access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
     });
- 
-    // context.log("Node.js blob trigger function processed blob \n Name:", context.bindingData.name, "\n Blob Size:", myBlob.length, "Bytes");
-    // context.log('Node.js blob trigger function processed blob', myBlob);
-    // context.log('Node.js blob type of', typeof myBlob);
 
     var blobName = context.bindingData.name;
     var blobSvc = azure.createBlobService();
@@ -29,9 +25,10 @@ module.exports = function (context, myBlob) {
 
         // Make post request on media endpoint. Pass file data as media parameter
         client.post('media/upload', {media: twitterImage}, function(error, media, response) {
+            context.log("Begin Media Upload");
             if (!error) {
                 // If successful, a media object will be returned.
-                context.log('media uploaded');
+                context.log('upload successful');
 
                 // Lets tweet it
                 var status = {
@@ -40,26 +37,29 @@ module.exports = function (context, myBlob) {
                 }
 
                 client.post('statuses/update', status, function(error, tweet, response) {
+                    context.log("Send Tweet");
                     if (!error) {
+                        context.log("No Errors Sending Tweet");
                         var tweet_link = "https://twitter.com/MicrosoftLaunch/status/" + tweet[0].d_str;
-                        // context.log('tweet sent', tweet);
-                        context.log("tweet sent");
-                        context.log('tweet link', tweet_link);
-                        // context.log('tweet response', response);
+
+                        context.log("Tweet sent");
+                        context.log('Tweet link', tweet_link);
+
                         blobSvc.deleteBlob(containerName, blobName, function(error, response){
+                            context.log("Begin deleting Blob");
                             if(!error){
                                 // Blob has been deleted
-                                context.log('deleted');
+                                context.log('Deleted');
                                 context.done();
                             } else {
-                                context.log('error deleting');
+                                context.log('Error Deleting', error);
                                 context.done();
                             }
                         });
                     }
                 });
             } else {
-                context.log('error uploading', error);
+                context.log('Error Uploading', error);
                 context.done();
             }
         });
