@@ -10,7 +10,6 @@ module.exports = function (context, myBlob) {
 
     var containerName = "workitems";
     var destinationFileNameTarget = path.join(os.tmpdir(),"file.jpg");
-    var azureContext = context;
 
     var client = new Twitter({
         consumer_key: process.env.TWITTER_CONSUMER_KEY,
@@ -43,30 +42,24 @@ module.exports = function (context, myBlob) {
                 context.log("twitter status to be processed");
                 context.log(JSON.stringify(status));
                 client.post('statuses/update', status, function(error, tweet, response) {
-                    azureContext.log("Azure Tweet Updated");
+                    if(error) throw error;
                     context.log("Tweet Updated");
-                    context.log(JSON.stringify(tweet));
-                    if (!error) {
-                        var tweet_link = "https://twitter.com/MicrosoftLaunch/status/" + tweet[0].d_str;
-                        context.log("Tweet sent");
-                        context.log('Tweet link', tweet_link);
-
-                        blobSvc.deleteBlob(containerName, blobName, function(error, response){
-                            context.log("Begin deleting Blob");
-                            if(!error){
-                                // Blob has been deleted
-                                context.log('Deleted');
-                                context.done();
-                            } else {
-                                context.log('Error Deleting', error);
-                                context.done();
-                            }
-                        });
-                    } else {
-                        context.log('Error send tweet');
-                        context.log(JSON.stringify(error));
-                        context.done();
-                    }
+                    context.log(tweet);
+                    context.log(response);
+                    var tweet_link = "https://twitter.com/MicrosoftLaunch/status/" + tweet[0].d_str;
+                    context.log("Tweet sent");
+                    context.log('Tweet link', tweet_link);
+                    blobSvc.deleteBlob(containerName, blobName, function(error, response){
+                        context.log("Begin deleting Blob");
+                        if(!error){
+                            // Blob has been deleted
+                            context.log('Deleted');
+                            context.done();
+                        } else {
+                            context.log('Error Deleting', error);
+                            context.done();
+                        }
+                    });
                 });
             } else {
                 context.log('Error Uploading', error);
