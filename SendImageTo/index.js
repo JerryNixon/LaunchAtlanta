@@ -6,7 +6,7 @@ var os = require('os');
 
 module.exports = function (context, myBlob) {
 
-    console.log("Starting console logging");
+    context.log("Starting console logging");
 
     var containerName = "workitems";
     var destinationFileNameTarget = path.join(os.tmpdir(),"file.jpg");
