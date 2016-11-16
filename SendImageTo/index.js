@@ -7,7 +7,7 @@ var os = require('os');
 module.exports = function (context, myBlob) {
 
     console.log("Starting console logging");
-    
+
     var containerName = "workitems";
     var destinationFileNameTarget = path.join(os.tmpdir(),"file.jpg");
 
@@ -37,13 +37,14 @@ module.exports = function (context, myBlob) {
                 var status = {
                     status: 'I am a tweet',
                     media_ids: media.media_id_string // Pass the media id string
-                }
+                };
 
+                context.log("twitter status to be processed");
+                context.log(JSON.stringify(status));
                 client.post('statuses/update', status, function(error, tweet, response) {
-                    console.log("Send Tweet");
+                    context.log("Tweet Updated");
+                    context.log(JSON.stringify(tweet));
                     if (!error) {
-                        console.log("No Errors Sending Tweet");
-                        console.log(tweet);
                         var tweet_link = "https://twitter.com/MicrosoftLaunch/status/" + tweet[0].d_str;
 
                         context.log("Tweet sent");
@@ -61,7 +62,7 @@ module.exports = function (context, myBlob) {
                             }
                         });
                     } else {
-                        context.log('Error send tweet', error);
+                        console.log('Error send tweet', error);
                         context.done();
                     }
                 });
