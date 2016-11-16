@@ -40,6 +40,7 @@ module.exports = function (context, myBlob) {
                     context.log("Send Tweet");
                     if (!error) {
                         context.log("No Errors Sending Tweet");
+                        context.log(tweet);
                         var tweet_link = "https://twitter.com/MicrosoftLaunch/status/" + tweet[0].d_str;
 
                         context.log("Tweet sent");
@@ -56,6 +57,9 @@ module.exports = function (context, myBlob) {
                                 context.done();
                             }
                         });
+                    } else {
+                        context.log('Error send tweet', error);
+                        context.done();
                     }
                 });
             } else {
