@@ -5,6 +5,9 @@ var path = require('path');
 var os = require('os');
 
 module.exports = function (context, myBlob) {
+
+    console.log("Starting console logging");
+    
     var containerName = "workitems";
     var destinationFileNameTarget = path.join(os.tmpdir(),"file.jpg");
 
@@ -37,10 +40,10 @@ module.exports = function (context, myBlob) {
                 }
 
                 client.post('statuses/update', status, function(error, tweet, response) {
-                    context.log("Send Tweet");
+                    console.log("Send Tweet");
                     if (!error) {
-                        context.log("No Errors Sending Tweet");
-                        context.log(tweet);
+                        console.log("No Errors Sending Tweet");
+                        console.log(tweet);
                         var tweet_link = "https://twitter.com/MicrosoftLaunch/status/" + tweet[0].d_str;
 
                         context.log("Tweet sent");
