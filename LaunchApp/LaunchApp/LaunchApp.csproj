@@ -154,12 +154,6 @@
   <ItemGroup>
     <Folder Include="Models\" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CameraControl\CameraControl.csproj">
-      <Project>{c966bbfb-aed4-4aab-b332-99ef8da44ba5}</Project>
-      <Name>CameraControl</Name>
-    </ProjectReference>
-  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
