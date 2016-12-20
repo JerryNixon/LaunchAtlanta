@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
+using Windows.Foundation;
 using Windows.Media.Capture;
 using Windows.Media.Core;
+using Windows.Media.MediaProperties;
 using Windows.System.Display;
 
 namespace CameraControl
@@ -19,6 +22,26 @@ namespace CameraControl
         public static MediaCapture DefaultManager { get; set; } = null;
         public string VideoId => DefaultManager?.MediaCaptureSettings.VideoDeviceId;
         public string AudioId => DefaultManager?.MediaCaptureSettings.VideoDeviceId;
+
+        public Size PhotoResolution
+        {
+            get
+            {
+                var propertyBag = DefaultManager.VideoDeviceController.GetAvailableMediaStreamProperties(MediaStreamType.Photo);
+                var properties = propertyBag.OfType<ImageEncodingProperties>().FirstOrDefault();
+                return new Size(properties.Width, properties.Height);
+            }
+        }
+
+        public Size VideoResolution
+        {
+            get
+            {
+                var propertyBag = DefaultManager.VideoDeviceController.GetAvailableMediaStreamProperties(MediaStreamType.VideoPreview);
+                var properties = propertyBag.OfType<VideoEncodingProperties>().FirstOrDefault();
+                return new Size(properties.Width, properties.Height);
+            }
+        }
 
         public async Task<MediaCapture> InitAsync(string videoDeviceId, string audioDeviceId = null)
         {

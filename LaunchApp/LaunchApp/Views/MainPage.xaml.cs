@@ -1,13 +1,9 @@
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 using Windows.ApplicationModel;
-using Windows.Graphics.Display;
-using Windows.Media.Capture;
-using Windows.System.Display;
-using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+
 
 namespace LaunchApp.Views
 {
@@ -64,9 +60,16 @@ namespace LaunchApp.Views
             }
         }
 
-        private void BackgroundList_ItemClick(Object sender, ItemClickEventArgs e)
+        private async void BackgroundList_ItemClick(Object sender, ItemClickEventArgs e)
         {
-            // TODO
+            var foreground = await PreviewControl.CapturePhotoAsync();
+            var service = new Services.FaceSwapService();
+            var packageFolder = Package.Current.InstalledLocation;
+            var assetsFolder = await packageFolder.GetFolderAsync("Assets");
+            var backgroundFile = await assetsFolder.GetFileAsync("Sample.png");
+            var backgroundPath = backgroundFile.Path;
+            var backgroundBitmap = await service.BitmapFromFileAsync(backgroundPath);
+            var result = await service.SwapFacesAsync(backgroundBitmap, foreground);
         }
 
         private void SettingsButton_Click(Object sender, RoutedEventArgs e)
@@ -74,4 +77,5 @@ namespace LaunchApp.Views
             VisualStateManager.GoToState(this, VisualStateAdmin.Name, true);
         }
     }
+
 }

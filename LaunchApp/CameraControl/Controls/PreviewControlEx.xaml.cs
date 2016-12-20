@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
+using Windows.Foundation;
 using Windows.Graphics.Imaging;
 using Windows.Media.FaceAnalysis;
 using Windows.Storage;
@@ -80,17 +81,15 @@ namespace CameraControl
             FaceDetected?.Invoke(this, args);
         }
 
+        public Size PhotoResolution => cameraService.PhotoResolution;
+
+        public Size VideoResolution => cameraService.VideoResolution;
+
         public Style FaceOutlineStyle { get; set; }
 
-        public async Task<SoftwareBitmap> CapturePhoto()
-        {
-            return await cameraService.Photo.CaptureAsync();
-        }
+        public async Task<SoftwareBitmap> CapturePhotoAsync() => await cameraService.Photo.CaptureAsync();
 
-        public async Task<StorageFile> CapturePhoto(StorageFolder folder, string name)
-        {
-            return await cameraService.Photo.CaptureAsync(folder, name);
-        }
+        public async Task<StorageFile> CapturePhotoAsync(StorageFolder folder, string name) => await cameraService.Photo.CaptureAsync(folder, name);
 
     }
 
