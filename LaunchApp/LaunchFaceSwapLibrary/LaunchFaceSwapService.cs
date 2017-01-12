@@ -42,7 +42,7 @@ namespace LaunchFaceSwapLibrary
                 swapper.Swap3D(backgroundFaces, backgroundPoints, foregroundFaces, foregroundPoints, resultingImage);
                 return ConvertTo.SoftwareBitmap.FromImage(resultingImage);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 Debugger.Break();
                 throw;
@@ -106,9 +106,5 @@ namespace LaunchFaceSwapLibrary
 
             return new Tuple<Image<byte>, IList<PointF>>(image, points);
         }
-
-
-
     }
-
 }
