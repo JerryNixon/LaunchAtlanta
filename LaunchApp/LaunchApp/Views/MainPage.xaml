@@ -3,10 +3,12 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
       xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
+      xmlns:c="using:CameraControl"
       xmlns:controls="using:Template10.Controls"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="using:LaunchApp.Views"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:my="using:LaunchApp.Controls"
       xmlns:vm="using:LaunchApp.ViewModels"
       mc:Ignorable="d">
 
@@ -15,25 +17,102 @@
     </Page.DataContext>
 
     <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStateGroup">
+                <VisualState x:Name="VisualStateNormal">
+                    <VisualState.Setters>
+                        <Setter Target="IdleContainer.(UIElement.Visibility)" Value="Collapsed" />
+                        <Setter Target="AdminContainer.(UIElement.Visibility)" Value="Collapsed" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="VisualStateIdle">
+                    <VisualState.Setters>
+                        <Setter Target="IdleContainer.(UIElement.Visibility)" Value="Visible" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="VisualStateAdmin">
+                    <VisualState.Setters>
+                        <Setter Target="AdminContainer.(UIElement.Visibility)" Value="Visible" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
 
-        <controls:PageHeader x:Name="pageHeader"
-                             Content="Main Page"
-                             RelativePanel.AlignLeftWithPanel="True"
-                             RelativePanel.AlignRightWithPanel="True"
-                             RelativePanel.AlignTopWithPanel="True" />
+        <c:PreviewControlEx x:Name="PreviewControl"
+                            RelativePanel.AlignBottomWithPanel="True"
+                            RelativePanel.AlignLeftWithPanel="True"
+                            RelativePanel.AlignRightWithPanel="True"
+                            RelativePanel.AlignTopWithPanel="True">
+            <c:PreviewControlEx.FaceOutlineStyle>
+                <Style TargetType="Rectangle">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </Style>
+            </c:PreviewControlEx.FaceOutlineStyle>
+        </c:PreviewControlEx>
 
-        <RelativePanel EntranceNavigationTransitionInfo.IsTargetElement="True"
-                       RelativePanel.AlignBottomWithPanel="True"
-                       RelativePanel.AlignLeftWithPanel="True"
-                       RelativePanel.AlignRightWithPanel="True"
-                       RelativePanel.Below="pageHeader">
+        <ListView x:Name="BackgroundList"
+                  Height="200"
+                  Margin="0,16"
+                  IsItemClickEnabled="True"
+                  ItemClick="BackgroundList_ItemClick"
+                  RelativePanel.AlignBottomWithPanel="True"
+                  RelativePanel.AlignLeftWithPanel="True"
+                  RelativePanel.AlignRightWithPanel="True"
+                  ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                  ScrollViewer.HorizontalScrollMode="Auto"
+                  ScrollViewer.VerticalScrollMode="Disabled">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Width" Value="250" />
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                    <Setter Property="Margin" Value="8,0" />
+                    <Setter Property="Padding" Value="0" />
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Image Source="ms-appx:///Assets/Sample.png" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <x:String>x</x:String>
+            <x:String>x</x:String>
+            <x:String>x</x:String>
+            <x:String>x</x:String>
+            <x:String>x</x:String>
+            <x:String>x</x:String>
+        </ListView>
 
-            <!--  content  -->
-            <TextBlock x:Name="textBlock"
-                       Margin="16,12,0,0"
-                       Text="Hello World" />
+        <Button x:Name="SettingsButton"
+                Width="50"
+                Height="50"
+                Margin="16"
+                Click="SettingsButton_Click"
+                Opacity=".5"
+                RelativePanel.AlignRightWithPanel="True"
+                RelativePanel.AlignTopWithPanel="True"
+                Style="{StaticResource EllipsisButton}" />
 
-        </RelativePanel>
+        <Grid x:Name="IdleContainer"
+              Background="Green"
+              RelativePanel.AlignBottomWithPanel="True"
+              RelativePanel.AlignLeftWithPanel="True"
+              RelativePanel.AlignRightWithPanel="True"
+              RelativePanel.AlignTopWithPanel="True"
+              Visibility="Collapsed" />
+
+        <Grid x:Name="AdminContainer"
+              Background="Yellow"
+              RelativePanel.AlignBottomWithPanel="True"
+              RelativePanel.AlignLeftWithPanel="True"
+              RelativePanel.AlignRightWithPanel="True"
+              RelativePanel.AlignTopWithPanel="True"
+              Visibility="Collapsed" />
 
     </RelativePanel>
 

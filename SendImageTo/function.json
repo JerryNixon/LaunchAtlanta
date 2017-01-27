@@ -1,0 +1,12 @@
+{
+    "disabled": false,
+    "bindings": [
+        {
+            "name": "SendImageTo",
+            "type": "blobTrigger",
+            "direction": "in",
+            "path": "workitems/{name}",
+            "connection":""
+        }
+    ]
+}
