@@ -16,6 +16,9 @@ using Microsoft.FaceSdk.Reconstruction;
 using Microsoft.FaceSdk.Wrapper;
 using DWG = System.Drawing;
 using IMG = System.Drawing.Imaging;
+using Microsoft.Azure;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace LaunchAtlanta.FaceSwap
 {
@@ -41,10 +44,20 @@ namespace LaunchAtlanta.FaceSwap
 
             swapper.Reconstructor = reconstructor;
 
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
+            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+            CloudBlobContainer outputContainer = blobClient.GetContainerReference("output");
+            CloudBlockBlob outputBlob = outputContainer.GetBlockBlobReference("output.jpg");
+
             try
             {
                 FaceSwapInTwoImages(sourceSwapImage, target, source, out output);
                 output.Save(outputFaceFilePath);
+
+                using (var fileStream = File.OpenRead(outputFaceFilePath))
+                {
+                    outputBlob.UploadFromStream(fileStream);
+                }
 
                 return "Success: Face swap was output saved to disk";
             }
