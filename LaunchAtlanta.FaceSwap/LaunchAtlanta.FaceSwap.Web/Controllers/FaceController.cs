@@ -5,74 +5,49 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using LaunchAtlanta.FaceSwap;
+using LaunchAtlanta.FaceSwap.Web.Models;
+using Newtonsoft.Json;
 
 namespace LaunchAtlanta.FaceSwap.Web.Controllers
 {
     public class FaceController : ApiController
     {
         // GET: api/Face
-        public string Get()
+        public async Task<string> Post()
         {
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
-            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+            var data = await Request.Content.ReadAsStringAsync();
+            var requestData = JsonConvert.DeserializeObject<RequestBodyData>(data);
 
-            CloudBlobContainer faceContainer = blobClient.GetContainerReference("face");
-            CloudBlobContainer envContainer = blobClient.GetContainerReference("env");
-            CloudBlobContainer outputContainer = blobClient.GetContainerReference("output");
-
-            var faceCreated = faceContainer.CreateIfNotExists();
-            var envCreated = envContainer.CreateIfNotExists();
-            var outputCreated = outputContainer.CreateIfNotExists();
-
-            if (faceCreated)
-                faceContainer.SetPermissions(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
-            if (envCreated)
-                envContainer.SetPermissions(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
-            if (outputCreated)
-                outputContainer.SetPermissions(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
-
-            CloudBlob face = faceContainer.GetBlobReference("donald.jpg");
-            CloudBlob env = envContainer.GetBlobReference("hillary.jpg");
-
-            using (var faceStream = File.OpenWrite(@"c:\tmp\donald.jpg"))
+            if (requestData.Key != Constants.Key)
             {
-                face.DownloadToStream(faceStream);
+                var msg = new HttpResponseMessage(HttpStatusCode.Unauthorized) { ReasonPhrase = "Incorrect Auth Token." };
+                throw new HttpResponseException(msg);
             }
 
-            using (var envStream = File.OpenWrite(@"c:\tmp\hillary.jpg"))
-            {
-                env.DownloadToStream(envStream);
-            }
+            CloudStorage cloudStorage = new CloudStorage();
+
+            string faceFileName = requestData.FaceFileName;
+            string envFileName = requestData.EnvFileName;
+            string outputFileName = "output_" + DateTime.Now.Ticks.ToString() + ".jpg";
+
+            string facePath = Constants.LocalTempDirectory + faceFileName;
+            string envPath = Constants.LocalTempDirectory + envFileName;
+            string outputPath = Constants.LocalTempDirectory + outputFileName;
+
+            cloudStorage.CreateLocalFiles(faceFileName, envFileName);
 
             Swapper swapper = new Swapper();
-            var result = swapper.SwapFaces(@"c:\tmp\donald.jpg", @"c:\tmp\hillary.jpg", @"c:\tmp\output.jpg");
+            swapper.SwapFaces(facePath, envPath, outputPath);
 
-            return result;
-        }
+            cloudStorage.DeleteLocalFiles(facePath, envPath, outputPath);
 
-        // GET: api/Face/5
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST: api/Face
-        public void Post([FromBody]string value)
-        {
-        }
-
-        // PUT: api/Face/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE: api/Face/5
-        public void Delete(int id)
-        {
+            return cloudStorage.GetOutputUri(outputFileName);
         }
     }
 }

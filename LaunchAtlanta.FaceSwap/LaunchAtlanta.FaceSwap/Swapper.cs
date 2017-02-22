@@ -47,7 +47,7 @@ namespace LaunchAtlanta.FaceSwap
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
             CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
             CloudBlobContainer outputContainer = blobClient.GetContainerReference("output");
-            CloudBlockBlob outputBlob = outputContainer.GetBlockBlobReference("output.jpg");
+            CloudBlockBlob outputBlob = outputContainer.GetBlockBlobReference(outputFaceFilePath.Split('\\')[2]);
 
             try
             {
