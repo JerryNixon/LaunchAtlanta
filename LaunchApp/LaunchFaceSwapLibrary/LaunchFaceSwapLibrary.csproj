@@ -114,19 +114,19 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.FaceSdk.Core">
-      <HintPath>..\..\..\..\TEMP\FaceSwapHelper\bin\Microsoft.FaceSdk.Core.dll</HintPath>
+      <HintPath>..\bin\Microsoft.FaceSdk.Core.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.FaceSdk.Detection">
-      <HintPath>..\..\..\..\TEMP\FaceSwapHelper\bin\Microsoft.FaceSdk.Detection.dll</HintPath>
+      <HintPath>..\bin\Microsoft.FaceSdk.Detection.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.FaceSdk.Effect">
-      <HintPath>..\..\..\..\TEMP\FaceSwapHelper\bin\Microsoft.FaceSdk.Effect.dll</HintPath>
+      <HintPath>..\bin\Microsoft.FaceSdk.Effect.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.FaceSdk.Reconstruction">
-      <HintPath>..\..\..\..\TEMP\FaceSwapHelper\bin\Microsoft.FaceSdk.Reconstruction.dll</HintPath>
+      <HintPath>..\bin\Microsoft.FaceSdk.Reconstruction.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.FaceSdk.Wrapper">
-      <HintPath>..\..\..\..\TEMP\FaceSwapHelper\bin\Microsoft.FaceSdk.Wrapper.dll</HintPath>
+      <HintPath>..\bin\Microsoft.FaceSdk.Wrapper.dll</HintPath>
     </Reference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

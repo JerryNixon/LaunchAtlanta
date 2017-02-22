@@ -63,13 +63,13 @@ namespace LaunchApp.Views
         private async void BackgroundList_ItemClick(Object sender, ItemClickEventArgs e)
         {
             var foreground = await PreviewControl.CapturePhotoAsync();
-            var service = new Services.FaceSwapService();
+            //var service = new Services.FaceSwapService();
             var packageFolder = Package.Current.InstalledLocation;
             var assetsFolder = await packageFolder.GetFolderAsync("Assets");
             var backgroundFile = await assetsFolder.GetFileAsync("Sample.png");
             var backgroundPath = backgroundFile.Path;
-            var backgroundBitmap = await service.BitmapFromFileAsync(backgroundPath);
-            var result = await service.SwapFacesAsync(backgroundBitmap, foreground);
+            //var backgroundBitmap = await service.BitmapFromFileAsync(backgroundPath);
+            //var result = await service.SwapFacesAsync(backgroundBitmap, foreground);
         }
 
         private void SettingsButton_Click(Object sender, RoutedEventArgs e)
