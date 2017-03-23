@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
 
-namespace LaunchApp.Servicez.BlobService
+namespace LaunchApp.Services.BlobService
 {
     class BlobService
     {

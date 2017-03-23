@@ -26,7 +26,7 @@ namespace LaunchAtlanta.FaceSwap.Web.Models
             envContainer = blobClient.GetContainerReference("env");
             outputContainer = blobClient.GetContainerReference("output");
 
-            CreateContainers();
+            //CreateContainers();
         }
 
         public void CreateLocalFiles(string faceFileName, string envFileName)

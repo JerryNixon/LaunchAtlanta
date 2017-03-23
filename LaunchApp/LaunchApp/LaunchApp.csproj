@@ -102,11 +102,13 @@
     <Compile Include="Controls\NumberPad.xaml.cs">
       <DependentUpon>NumberPad.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\FaceSwapDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\BlobService\BlobHelper.cs" />
     <Compile Include="Services\BlobService\ItemLogic.cs" />
     <Compile Include="Services\BlobService\BlobService.cs" />
     <Compile Include="Services\BlobService\ContainerLogic.cs" />
+    <Compile Include="Services\FaceSwapService.cs" />
     <Compile Include="Services\FileHelper.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
@@ -150,9 +152,7 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\CameraControl\CameraControl.csproj">
       <Project>{c966bbfb-aed4-4aab-b332-99ef8da44ba5}</Project>

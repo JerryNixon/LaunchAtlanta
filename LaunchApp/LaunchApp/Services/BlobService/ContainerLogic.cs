@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LaunchApp.Servicez.BlobService
+namespace LaunchApp.Services.BlobService
 {
     public class ContainerLogic
     {

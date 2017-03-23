@@ -77,15 +77,12 @@
             </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Image Source="ms-appx:///Assets/Sample.png" />
+                    <Image Tag="{Binding}" Loaded="Image_Loaded" />
                 </DataTemplate>
             </ListView.ItemTemplate>
-            <x:String>x</x:String>
-            <x:String>x</x:String>
-            <x:String>x</x:String>
-            <x:String>x</x:String>
-            <x:String>x</x:String>
-            <x:String>x</x:String>
+            <x:String>hillary.jpg</x:String>
+            <x:String>hillary.jpg</x:String>
+            <x:String>hillary.jpg</x:String>
         </ListView>
 
         <Button x:Name="SettingsButton"
